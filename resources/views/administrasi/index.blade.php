@@ -1,0 +1,64 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Manajemen Data Administrasi</h6>
+    </div>
+
+ <div class="card-body">
+    <a href = "{{ route('administrasi.create') }}" class="btn btn-primary">Tambah Data</a>
+    @if (session('success'))
+    <div class="alert alert-success">{{session('success')}}</div>
+    @endif
+    <div class="table-responsive">
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+    <thead class="table-light">
+        <tr>
+            <th>No.</th>
+            <th>Sub Kategori</th>
+            <th>Judul</th>
+            <th>Deskripsi</th>
+            <th>File</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        @forelse ($administrasi as $a)
+            <tr>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $a->sub_kategori }}</td>
+                <td>{{ $a->judul }}</td>
+                <td>{{ $a->deskripsi }}</td>
+                <td>
+                    @if($a->file_path)
+                        <a href="{{ asset('storage/' . $a->file_path) }}" target="_blank" class="btn btn-sm btn-info">Lihat File</a>
+                    @else
+                        Tidak ada file
+                    @endif
+                </td>
+                <td>
+                    <a href="{{ route('administrasi.show', $a->id) }}" class="btn btn-sm btn-info mb-1">
+                        <i class="fas fa-eye"></i>Detail</a>
+                    <a href="{{ route('administrasi.edit', $a->id) }}" class="btn btn-sm btn-warning mb-1">
+                        <i class="fas fa-edit"></i>Ubah</a>
+                    <form action="{{ route('administrasi.destroy', $a->id) }}" method="POST" class="d-Inline"
+                    onsubmit="return confirm('Yakin Ingin Menghapus Data ini?')">
+                    @csrf
+                    @method('Delete')
+                    <button type='submit' class="btn btn-sm btn-danger mb-1">
+                        <i class="fas fa-trash"></i>Hapus</button> </form>
+                </td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="6" class="text-center">Belum ada Data Administrasi </td>
+            </tr>
+        @endforelse
+
+    </tbody>
+    </table>
+    </div>
+</div>
+ </div>
+@endsection

@@ -1,0 +1,40 @@
+<?php
+
+use App\Http\Controllers\API\AdminController;
+use App\Http\Controllers\API\AdministrasiController;
+use App\Http\Controllers\API\AgendaController;
+use App\Http\Controllers\API\AkademikController;
+use App\Http\Controllers\API\AlumniController;
+use App\Http\Controllers\API\BeritaController;
+use App\Http\Controllers\API\DosenController;
+use App\Http\Controllers\API\GaleriController;
+use App\Http\Controllers\API\KegiatanController;
+use App\Http\Controllers\API\KemahasiswaanController;
+use App\Http\Controllers\API\KeuanganController;
+use App\Http\Controllers\API\KurikulumController;
+use App\Http\Controllers\API\MahasiswaController;
+use App\Http\Controllers\API\PenelitianController;
+use App\Http\Controllers\API\PengumumanController;
+use App\Http\Controllers\API\ProfilProdiController;
+use App\Http\Controllers\API\ProjectController;
+use App\Http\Controllers\API\PkmController;
+use Illuminate\Support\Facades\Route;
+
+Route::apiResource('dosen', DosenController::class)->names('api.dosen');
+Route::apiResource('project', ProjectController::class)->names('api.project');
+Route::apiResource('berita', BeritaController::class)->names('api.berita');
+Route::apiResource('pengumuman', PengumumanController::class)->names('api.pengumuman');
+Route::apiResource('agenda', AgendaController::class)->names('api.agenda');
+// Route::apiResource('galeri', GaleriController::class)->names('api.galeri');
+// Route::apiResource('kegiatan', KegiatanController::class)->names('api.kegiatan');
+Route::apiResource('kurikulum', KurikulumController::class)->names('api.kurikulum');
+Route::apiResource('kemahasiswaan', KemahasiswaanController::class)->names('api.kemahasiswaan');
+Route::apiResource('administrasi',AdministrasiController::class)->names('api.administrasi');
+Route::apiResource('keuangan', KeuanganController::class)->names('api.keuangan');
+Route::apiResource('akademik', AkademikController::class)->names('api.akademik');
+// Route::apiResource('mahasiswa', MahasiswaController::class)->names('api.mahasiswa');
+Route::apiResource('profilprodi', ProfilProdiController::class)->names('api.profilprodi');
+Route::apiResource('pkm', PkmController::class)->names('api.pkm');
+Route::apiResource('penelitian', PenelitianController::class)->names('api.penelitian');
+Route::apiResource('admin', AdminController::class)->names('api.admin');
+Route::apiResource('alumni', AlumniController::class)->names('api.alumni');
