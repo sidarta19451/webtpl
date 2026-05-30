@@ -205,14 +205,23 @@
                                 <div class="col-md-6 mb-4">
                                     <div class="input-group-modern">
                                         <i class="fas fa-id-badge input-icon"></i>
-                                        <input type="text" name="nidn" class="form-control input-with-icon" placeholder="Masukkan NIDN" required>
+                                        <input type="text" name="nidn" class="form-control input-with-icon" 
+                                        placeholder="Masukkan NIDN (10 angka)" 
+                                        pattern="\d{10}" 
+                                        title="NIDN harus terdiri dari tepat 10 angka" 
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 10)" 
+                                        required>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <div class="input-group-modern">
                                         <i class="fas fa-user input-icon"></i>
-                                        <input type="text" name="nama" class="form-control input-with-icon" placeholder="Masukkan Nama Lengkap" required>
+                                        <input type="text" name="nama" class="form-control input-with-icon @error('nama') is-invalid @enderror" 
+                                            placeholder="Masukkan Nama Lengkap" value="{{ old('nama') }}" required>
                                     </div>
+                                    @error('nama')
+                                        <div class="text-danger mt-1" style="font-size: 0.85rem;"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             
@@ -220,8 +229,12 @@
                                 <div class="col-md-6 mb-4">
                                     <div class="input-group-modern">
                                         <i class="fas fa-envelope input-icon"></i>
-                                        <input type="email" name="email" class="form-control input-with-icon" placeholder="Masukkan Email" required>
+                                        <input type="email" name="email" class="form-control input-with-icon @error('email') is-invalid @enderror" 
+                                            placeholder="Masukkan Email" value="{{ old('email') }}" required>
                                     </div>
+                                    @error('email')
+                                        <div class="text-danger mt-1" style="font-size: 0.85rem;"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <div class="input-group-modern">

@@ -28,42 +28,50 @@ class DosenController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'nidn' => 'required|unique:tbl_dosen,nidn',
-            'nama' => 'required',
-            'email' => 'required|unique:tbl_dosen,email',
-            'jurusan' => 'required',
-            'jabatan' => 'nullable',
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'link_google_scholar' => 'nullable|url',
-            'link_sinta' => 'nullable|url',
-            'link_scopus' => 'nullable|url',
-            'link_penelitian' => 'nullable|array',
-            'link_penelitian.*' => 'nullable|url'
+{
+    // 1. Validasi
+    $request->validate([
+        'nidn'  => 'required|digits:10',
+        'nama'  => 'required|string|max:255|unique:tbl_dosen,nama',
+        'email' => 'required|email|unique:tbl_dosen,email',
+        'jurusan' => 'required',
+        'jabatan' => 'nullable',
+        'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'link_google_scholar' => 'nullable|url',
+        'link_sinta' => 'nullable|url',
+        'link_scopus' => 'nullable|url',
+        'link_penelitian' => 'nullable|array',
+        'link_penelitian.*' => 'nullable|url'
+    ], [
+        // 2. Pesan Error (Dipindahkan ke argumen kedua)
+        'nidn.digits' => 'NIDN harus tepat 10 angka.',
+        'nama.unique' => 'Nama dosen sudah terdaftar di database.',
+        'email.unique' => 'Email ini sudah digunakan oleh dosen lain.',
+    ]);
 
-        ]);
-
-        $foto = null;
-        if($request->hasFile('foto')){
-            $foto = $request->file('foto')->store('dosen', 'public');
-        }
-        
-        Dosen::create([
-            'nidn' => $request->nidn,
-            'nama' => $request->nama,
-            'email' => $request->email,
-            'jurusan' => $request->jurusan,
-            'jabatan' => $request->jabatan,
-            'foto' => $foto,
-            'link_google_scholar' => $request->link_google_scholar,
-            'link_sinta' => $request->link_sinta,
-            'link_scopus' => $request->link_scopus,
-            'link_penelitian' => $request->link_penelitian,
-        ]);
-        return redirect()->route('dosen.index')->with('success','Data Dosen Berhasil ditambahkan');
-
+    // Proses upload foto
+    $foto = null;
+    if($request->hasFile('foto')){
+        $foto = $request->file('foto')->store('dosen', 'public');
     }
+    
+    // 3. Simpan data (Gunakan data dari $request, bukan teks error)
+    Dosen::create([
+        'nidn' => $request->nidn,
+        'nama' => $request->nama,
+        'email' => $request->email,
+        'jurusan' => $request->jurusan,
+        'jabatan' => $request->jabatan,
+        'foto' => $foto,
+        'link_google_scholar' => $request->link_google_scholar,
+        'link_sinta' => $request->link_sinta,
+        'link_scopus' => $request->link_scopus,
+        // Jika link_penelitian adalah array, Anda mungkin perlu mengubahnya jadi JSON string
+        'link_penelitian' => $request->link_penelitian ? json_encode($request->link_penelitian) : null,
+    ]);
+
+    return redirect()->route('dosen.index')->with('success','Data Dosen Berhasil ditambahkan');
+}
 
     /**
      * Display the specified resource.
